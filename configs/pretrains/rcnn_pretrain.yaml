@@ -1,0 +1,20 @@
+_BASE_: "../rcnn_base.yaml"
+
+MODEL:
+  META_ARCHITECTURE: GeneralizedRCNN 
+  ROI_HEADS:
+    NUM_CLASSES: 97
+  # PIXEL_STD: [57.375, 57.120, 58.395] 
+  PIXEL_STD: [1, 1, 1] 
+
+SOLVER:
+  IMS_PER_BATCH: 16
+  MAX_ITER: 60000
+  BASE_LR: 0.001
+  LR_SCHEDULER_NAME: WarmupCosineLR
+  BASE_LR_END: 0.0000001
+  AMP:
+    ENABLED: True
+
+INPUT:
+  DEP_GRAPH: False

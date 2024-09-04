@@ -1,0 +1,29 @@
+_BASE_: "rcnn_base.yaml"
+
+MODEL:
+  WEIGHTS: ./checkpoints/pretrain_metagraspnetv2_maskrcnn.pth
+  META_ARCHITECTURE: GraphRCNN 
+  ROI_HEADS:
+    NAME: GraphHeadGru
+    NUM_CLASSES: 98
+  # PIXEL_STD: [57.375, 57.120, 58.395] 
+  PIXEL_STD: [1, 1, 1] 
+
+DATALOADER:
+  NUM_WORKERS: 20
+
+SOLVER:
+  IMS_PER_BATCH: 32 
+  MAX_ITER: 30000
+  BASE_LR: 0.0005
+  LR_SCHEDULER_NAME: WarmupCosineLR
+  BASE_LR_END: 0.0000001
+  AMP:
+    ENABLED: True
+  # REFERENCE_WORLD_SIZE : 1
+
+
+INPUT:
+  GRAPH_GT_TYPE: gru_graph
+  AUGMENT: v3 
+

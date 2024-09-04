@@ -1,0 +1,41 @@
+_BASE_: 'detr_base.yaml'
+
+MODEL:
+  META_ARCHITECTURE: "GraphDetr"
+  WEIGHTS: "./checkpoints/pretrain_metagraspnetv2_detr.pth"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  MASK_ON: False
+  DETR:
+    NUM_CLASSES: 98
+  
+  GRAPH_HEAD:
+    NAME: 'GraphTransformerDense'
+    EDGE_FEATURES: 'concat'
+    HIDDEN_DIM: 256
+    NUM_HEADS: 2
+    NUM_LAYERS: 2
+    
+
+SOLVER:
+  IMS_PER_BATCH: 32
+  BASE_LR: 0.0005
+  BASE_LR_END: 0.00000001
+  MAX_ITER: 30000
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 100
+  LR_SCHEDULER_NAME: WarmupCosineLR
+  WEIGHT_DECAY: 0.0001
+  OPTIMIZER: "ADAMW"
+  BACKBONE_MULTIPLIER: 0.1
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 0.01
+    NORM_TYPE: 2.0
+  AMP:
+    ENABLED: True
+
+INPUT:
+  GRAPH_GT_TYPE: "dense"
+  AUGMENT: v3 

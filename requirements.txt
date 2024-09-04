@@ -1,0 +1,29 @@
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: linux-64
+
+beautifulsoup4
+detectron2
+easydict
+einops
+fvcore
+h5py
+huggingface-hub
+lovely-numpy
+lovely-tensors
+matplotlib
+networkx
+numpy
+pandas
+pycocotools
+setuptools
+tensorboard
+timm
+tokenizers
+tqdm
+transformers
+torch=2.2.0+cu118
+torch-geometric
+torchdata
+torchmetrics
+torchvision

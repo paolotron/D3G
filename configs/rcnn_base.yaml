@@ -1,0 +1,66 @@
+
+DATASETS:
+  ROOT: './datasets'
+  TRAIN: ("meta_graspnet_v2_synth_train", "meta_graspnet_v2_synth_eval")
+  EVAL: ("meta_graspnet_v2_synth_test_hard",)
+  TEST: ("meta_graspnet_v2_synth_test_hard", "meta_graspnet_v2_synth_test_easy", "meta_graspnet_v2_synth_test_medium", "meta_graspnet_v2_real_test")
+
+INPUT:
+  DEP_GRAPH: True
+  CLS_GT: True
+  OBJ_DET: True
+
+TEST:
+  EVAL_PERIOD: 1000
+  DETECTIONS_PER_IMAGE: 50
+
+DATALOADER:
+  NUM_WORKERS: 20
+
+
+MODEL:
+  WEIGHTS: "https://dl.fbaipublicfiles.com/detectron2/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x/137260431/model_final_a54504.pkl"
+  MASK_ON: True
+  META_ARCHITECTURE: "GeneralizedRCNN"
+  BACKBONE:
+    NAME: "build_resnet_fpn_backbone"
+  RESNETS:
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+    DEPTH: 50
+  FPN:
+    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+  ANCHOR_GENERATOR:
+    SIZES: [[32], [64], [128], [256], [512]]  # One size for each in feature map
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]  # Three aspect ratios (same for all in feature maps)
+  RPN:
+    IN_FEATURES: ["p2", "p3", "p4", "p5", "p6"]
+    PRE_NMS_TOPK_TRAIN: 2000  # Per FPN level
+    PRE_NMS_TOPK_TEST: 1000  # Per FPN level
+    # Detectron1 uses 2000 proposals per-batch,
+    # (See "modeling/rpn/rpn_outputs.py" for details of this legacy issue)
+    # which is approximately 1000 proposals per-image since the default batch size for FPN is 2.
+    POST_NMS_TOPK_TRAIN: 1000
+    POST_NMS_TOPK_TEST: 1000
+  ROI_HEADS:
+    NAME: "StandardROIHeads"
+    IN_FEATURES: ["p2", "p3", "p4", "p5"]
+  ROI_BOX_HEAD:
+    NAME: "FastRCNNConvFCHead"
+    NUM_FC: 2
+    POOLER_RESOLUTION: 7
+  ROI_MASK_HEAD:
+    NAME: "MaskRCNNConvUpsampleHead"
+    NUM_CONV: 4
+    POOLER_RESOLUTION: 14
+
+SOLVER:
+  IMS_PER_BATCH: 128
+  MAX_ITER: 30000
+  OPTIMIZER: ADAM
+  BASE_LR: 0.001
+  LR_SCHEDULER_NAME: WarmupCosineLR
+  BASE_LR_END: 0.00001
+  AMP:
+    ENABLED: True
+
+VERSION: 2
