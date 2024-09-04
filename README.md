@@ -53,13 +53,10 @@ python main.py --config-file detr_graphdense_medium.yaml MODEL.WEIGHTS /path/to/
 ### Citation
 If you find this work usefull please cite it using:
 ```
-@misc{rabino2024modernvisualrelationshipreasoning,
-      title={A Modern Take on Visual Relationship Reasoning for Grasp Planning}, 
+@article{rabino2024relationshipreasoning,
+      title={A Modern Take on Visual Relationship Reasoning for Grasp Planning},
       author={Paolo Rabino and Tatiana Tommasi},
-      year={2024},
-      eprint={2409.02035},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO},
-      url={https://arxiv.org/abs/2409.02035}, 
+      journal={arXiv preprint arXiv:2409.02035},
+      year={2024} 
 }
 ``` 
