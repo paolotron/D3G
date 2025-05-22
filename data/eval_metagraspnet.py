@@ -110,7 +110,6 @@ class GraphEvaluator(DatasetEvaluator):
             'eval/map_50': m_ap['map_50'].item(),
             'eval/map_75': m_ap['map_75'].item(),
             }
-        overall_accuracy = self.OverallAccuracy.compute()
         relation_res = self.VRMNRel.compute()
         eval_relation_res = {f'eval/{k}': v for k, v in relation_res.items()}
         rel_ap_metrics = metrics.oi_eval.eval_rel_results(self.ap_prep_list, ['background', 'rel'])
@@ -123,5 +122,4 @@ class GraphEvaluator(DatasetEvaluator):
             'eval/map_75': m_ap['map_75'].item(),
             **eval_relation_res,
             **rel_ap_metrics,
-            'eval/overall_accuracy': overall_accuracy.item(),
         }
